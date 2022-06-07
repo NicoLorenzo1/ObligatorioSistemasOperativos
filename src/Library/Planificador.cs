@@ -11,6 +11,10 @@ namespace Library
 
         public static List<Proceso> queue = Proceso.processList;
 
+        public static List<Proceso> ejecution = new List<Proceso>();
+
+
+
 
         public Planificador()
         {

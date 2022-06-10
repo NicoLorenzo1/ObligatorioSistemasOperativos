@@ -11,14 +11,14 @@ namespace Program
             //Proceso proceso3 = new Proceso("proceso3", 10, 100, 0, 0);
             //Proceso proceso4 = new Proceso("proceso4", 2, 120);
 
+            LectorArchivo.Read();
 
-       //Console.WriteLine(Planificador.queue.Count);
-        //Planificador.LogicaPlanificador();
-        Cpu cpu = new Cpu();
-        cpu.TimerCounter();
-        //cpu.OrderByPriority();
+            //Console.WriteLine(Planificador.queue.Count);
+            //Planificador.LogicaPlanificador();
+            Cpu cpu = new Cpu();
+            cpu.TimerCounter();
+            //cpu.OrderByPriority();
 
-        LectorArchivo.Read();
 
         }
     }

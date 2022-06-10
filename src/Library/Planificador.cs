@@ -14,6 +14,11 @@ namespace Library
         public static List<Proceso> ejecution = new List<Proceso>();
 
 
+        public static int processCount = 0; //contador de ciclos de procesos
+        public static int priorityCount = 0; //contador de priority
+        public static int blockingCount = 0; //contador de e/s
+        public static int blockingTime = 0; //tiempo de duracón del bloqueo
+
 
 
         public Planificador()
@@ -21,45 +26,63 @@ namespace Library
 
         }
 
-        public static void LogicaPlanificador()
+        //Ordena la lista queue por priority y cpuTime, luego la asigna a listaOrdenada.
+        public static void OrderByPriority()
         {
+            var listaOrdenada = queue.OrderBy(c => c.priority).ThenBy(c => c.CpuTime).ToList();
 
-            int count = 0;
+            Proceso procesoListo = listaOrdenada[0];
+            Planificador.ejecution.Add(procesoListo);
 
-            if (count > 2)
+
+            if (processCount <= procesoListo.CpuTime)
             {
-                count = 0;
-            }
-
-
-            while (queue.Count != 0)
-            {
-
-                count = +1;
-
-                if (count == 2)
+                if (blockingCount == procesoListo.waitingEs)
                 {
-                    foreach (var item in queue)
+                    //Se resta contador de ciclos para que no se siga incrementando mientras esta en una E/S.
+                    processCount--;
+
+                    if (blockingTime < procesoListo.waitingInEs)
                     {
-                        item.priority = (2 + item.CpuTime) / item.CpuTime;
+                        //Se resta contador de llegada de la E/S mientras dure la misma.
+                        blockingCount--;
+
+                        //Se incrementa un ciclo la duración del bloqueo.
+                        blockingTime++;
+                        Console.WriteLine($"se esta ejecutando una entrada salida del proceso {procesoListo.Name}");
                     }
-
-                    Console.WriteLine($"Se actualizó la prioridad de los procesos");
                 }
+                else
+                {
+                    Console.WriteLine($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"El proceso {procesoListo.Name} finalizó su ejecución");
+                Planificador.processFinishList.Add(procesoListo);
+                queue.Remove(procesoListo);
+                processCount = 0;
+            }
+            return;
+        }
 
-                var orderPriority = queue.OrderBy(x => x.priority);
-                var maxPriority = orderPriority.Last();
-                //Console.WriteLine($"El proceso de mayor prioridad es {maxPriority.Name}");
 
-                queue.Remove(maxPriority);
-                Console.WriteLine($"El proceso {maxPriority.Name} comenzará su ejecución");
-
-                processFinishList.Add(maxPriority);
-                Console.WriteLine($"El proceso {maxPriority.Name} finalizó su ejecución");
+        public static void PriorityCalculated()
+        {
+            if (priorityCount == 5)
+            {
+                foreach (var item in queue)
+                {
+                    if (!ejecution.Contains(item))
+                    {
+                        item.TimeWaiting++;
+                        item.priority += (item.TimeWaiting + item.CpuTime) / item.CpuTime;
+                    }
+                }
+                priorityCount = 0;
 
             }
-
-
         }
 
     }

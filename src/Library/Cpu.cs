@@ -32,7 +32,7 @@ namespace Library
         private void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
         {
             Planificador.priorityCount++;
-            Planificador.processCount++;
+            //Planificador.processCount++;
             Planificador.blockingCount++;
             Planificador.OrderByPriority();
             Planificador.PriorityCalculated();

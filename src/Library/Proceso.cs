@@ -13,8 +13,11 @@ namespace Library
         public int waitingInEs; //tiempo que demora mientras hace la entrada salida
 
         public static List<Proceso> processList = new List<Proceso>();
+        public bool owner;
 
-        public Proceso(string name, int cpuTime, int priority, int waitingEs, int waitingInEs)
+        public int count;
+
+        public Proceso(string name, int cpuTime, int priority, int waitingEs, int waitingInEs, bool owner)
         {
             this.priority = priority;
             this.name = name;
@@ -22,6 +25,7 @@ namespace Library
             this.timeWaiting = 0;
             this.waitingEs = waitingEs;
             this.waitingInEs = waitingInEs;
+            this.owner = owner;
 
             processList.Add(this);
         }
@@ -42,6 +46,10 @@ namespace Library
             get
             {
                 return this.cpuTime;
+            }
+            set
+            {
+                this.cpuTime = value;
             }
         }
 

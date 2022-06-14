@@ -36,6 +36,7 @@ namespace Library
             Planificador.blockingCount++;
             Planificador.OrderByPriority();
             Planificador.PriorityCalculated();
+            Planificador.BlokedStatus();
 
 
         }

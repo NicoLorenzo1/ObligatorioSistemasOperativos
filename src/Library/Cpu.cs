@@ -33,7 +33,7 @@ namespace Library
         {
             Planificador.priorityCount++;
             //Planificador.processCount++;
-            Planificador.blockingCount++;
+            //Planificador.blockingCount++;
             Planificador.OrderByPriority();
             Planificador.PriorityCalculated();
             Planificador.BlokedStatus();

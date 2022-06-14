@@ -32,19 +32,23 @@ namespace Library
             var listaOrdenada = queue.OrderBy(c => c.priority).ThenBy(c => c.CpuTime).ToList();
 
             Proceso procesoListo = listaOrdenada[0];
+            ejecution.Clear();
             ejecution.Add(procesoListo);
 
 
             //Verificamos si el proceso aun tiene CpuTime para correr
             if (procesoListo.CpuTime > 0)
             {
-
+                blockingCount++;
                 //verifica si el tiempo contador es igual al tiempo en que tiene que llegar la E/S del proceso
                 if (blockingCount == procesoListo.waitingEs + 1)
                 {
+
                     //Verifica si el tiempo que debe durar la E/S del bloqueo ya transcurrio o esta en curso
-                    if (blokingOnTime <= procesoListo.waitingInEs)
+                    if (blokingOnTime < procesoListo.waitingInEs)
                     {
+                        //Se resta el blocking coung mientras no haya terminado de hacer la E/S sino lo realiza una sola vez.
+                        blockingCount--;
                         //Se incrementa un ciclo la duración del bloqueo.
                         blokingOnTime++;
 
@@ -52,8 +56,7 @@ namespace Library
                         if (procesoListo.owner == true)
                         {
                             Console.WriteLine($"El proceso {procesoListo.Name} espera por E/S.");
-                            blockingCount = 0;
-
+                            return;
                         }
                         else
                         {
@@ -66,16 +69,21 @@ namespace Library
                             queue.Remove(procesoListo);
                             blokedList.Add(procesoListo);
                         }
+
                     }
+                    //Después de realizar E/S se setea en 0
+                    blockingCount = 0;
+
                 }
                 else
                 {
+
                     procesoListo.CpuTime--;
                     blokingOnTime = 0;
                     Console.WriteLine($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}");
                     Console.WriteLine(blockingCount);
-                    Console.WriteLine(blokingOnTime);
-                    Console.WriteLine(procesoListo.waitingInEs);
+                    //Console.WriteLine(blokingOnTime);
+                    //Console.WriteLine(procesoListo.waitingInEs);
                 }
             }
             else
@@ -107,6 +115,8 @@ namespace Library
             }
         }
 
+
+//Revisar no deja imprimir es de proceso 3 cuando se libera el proceso 2
         public static void BlokedStatus()
         {
             foreach (Proceso process in blokedList)
@@ -119,8 +129,17 @@ namespace Library
                     blokedList.Remove(process);
                     blockingCount--;
 
-                    Console.WriteLine($"se removio el proceso {process.Name} de la lista de bloqueados");
-                    queue.Add(process);
+                    if (ejecution.ElementAt(0).owner == false)
+                    {
+                        Console.WriteLine(ejecution.ElementAt(0).owner);
+                        Console.WriteLine(ejecution.Count);
+                        Console.WriteLine($"se removio el proceso {process.Name} de la lista de bloqueados");
+                        queue.Add(process);
+                    }
+                    else
+                    {
+                        OrderByPriority();
+                    }
                 }
 
             }

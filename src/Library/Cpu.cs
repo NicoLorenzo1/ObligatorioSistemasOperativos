@@ -7,41 +7,42 @@ namespace Library
 {
     public class Cpu
     {
-        public static int count = 0;
+        public int count = 0;
 
-        System.Timers.Timer timerCounter = new System.Timers.Timer(1000);
-        public static List<Proceso> queue = Proceso.processList;
+        System.Timers.Timer timerCounter = new System.Timers.Timer(500);
+        // public static List<Proceso> queue = Proceso.processList;
 
         public void TimerCounter()
         {
-            if (queue.Count > 0)
+            if (Planificador.queue.Count > 0)
             {
-            timerCounter.Elapsed += timerCounter_Elapsed;
-            timerCounter.Start();
-            timerCounter.Enabled = true;
-            timerCounter.AutoReset = true;
-            Console.ReadKey();
+                timerCounter.Elapsed += timerCounter_Elapsed;
+                timerCounter.Start();
+                timerCounter.Enabled = true;
+                timerCounter.AutoReset = true;
+                Console.ReadKey();
             }
 
             else
             {
                 Console.WriteLine("No hay procesos para ejecutar.");
+                timerCounter.Stop();
+                return;
             }
         }
 
-        private void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
+        private static void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
         {
             Planificador.priorityCount++;
             //Planificador.processCount++;
             //Planificador.blockingCount++;
-            Planificador.OrderByPriority();
+            Planificador.PlanificatorLogic();
             Planificador.PriorityCalculated();
             Planificador.BlokedStatus();
 
-
         }
 
-       
+
     }
 }
 

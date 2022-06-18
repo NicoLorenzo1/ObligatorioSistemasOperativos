@@ -46,6 +46,7 @@ namespace Library
                         }
                         else
                         {
+                            //procesoListo.CpuTime--;
                             procesoListo.blokingOnTime = 0;
                             blockingCount = 0;
                             //procesoListo.CpuTime--;
@@ -64,22 +65,23 @@ namespace Library
                 }
                 else
                 {
-                    if (procesoListo.CpuTime > 0)
+                    if (procesoListo.CpuTime == 0)
+                    {
+                        // blockingCount++;
+                        procesoListo.CpuTime--;
+                        processFinishList.Add(procesoListo);
+                        queue.Remove(procesoListo);
+
+
+
+                    }
+                    else
                     {
                         blockingCount++;
                         procesoListo.CpuTime--;
                         //blokingOnTime = 0;
                         //Console.WriteLine(procesoListo.CpuTime);
                         Impresion.Log($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}", activeLog);
-                    }
-                    else
-                    {
-                        Impresion.Log($"El proceso {procesoListo.Name} finalizó su ejecución", activeLog);
-                        processFinishList.Add(procesoListo);
-                        queue.Remove(procesoListo);
-                        blockingCount = 0;
-                        // blokingOnTime = 0;
-                        OrderByPriority();
                     }
                 }
 

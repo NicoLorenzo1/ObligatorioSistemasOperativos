@@ -17,7 +17,7 @@ namespace Program
             Cpu cpu = new Cpu();
 
             //false muestra listas y true muestra paso a paso 
-            cpu.TimerCounter(true);
+            cpu.TimerCounter(false);
 
 
         }

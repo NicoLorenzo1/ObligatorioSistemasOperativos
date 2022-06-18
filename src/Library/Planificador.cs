@@ -16,14 +16,18 @@ namespace Library
 
         //public static int processCount = 0; //contador de ciclos de procesos
         public static int priorityCount = 0; //contador de priority
-        public static int blockingCount = 1; //contador de e/s
+        public static int blockingCount = 0; //contador de e/s
 
         //public static List<Proceso> processToEjecuteList = new List<Proceso>();
 
         public static void PlanificatorLogic(bool activeLog)
         {
             Proceso procesoListo = queue[0];
-            Console.WriteLine($">>>> {procesoListo.CpuTime} - {procesoListo.blokingOnTime} - {blockingCount}");
+            Console.WriteLine($">>>>{procesoListo.Name} - {procesoListo.CpuTime} - {procesoListo.blokingOnTime} - {blockingCount}");
+
+            //Console.WriteLine($"cputime>>>> {procesoListo.CpuTime}");
+            //Console.WriteLine($"blokingOnTime>>>> {procesoListo.blokingOnTime}");
+            //Console.WriteLine($"BlockingCount>>>> {blockingCount}");
 
             //Verificamos si el proceso aun tiene CpuTime para correr
             if (procesoListo.CpuTime >= 0)
@@ -34,17 +38,17 @@ namespace Library
                 {
                     if (procesoListo.owner == true)
                     {
-                        if (procesoListo.waitingInEs == procesoListo.blokingOnTime)
+                        //+1 bloking on time
+                        if (procesoListo.blokingOnTime < procesoListo.waitingInEs)
                         {
-                            procesoListo.blokingOnTime = 0;
-                            blockingCount = 1;
-                            procesoListo.CpuTime--;
-
+                            Impresion.Log($"El proceso {procesoListo.Name} espera por E/S.", activeLog);
+                            procesoListo.blokingOnTime++;
                         }
                         else
                         {
-                            procesoListo.blokingOnTime++;
-                            Impresion.Log($"El proceso {procesoListo.Name} espera por E/S.", activeLog);
+                            procesoListo.blokingOnTime = 0;
+                            blockingCount = 0;
+                            //procesoListo.CpuTime--;
                         }
                     }
                     else
@@ -52,34 +56,48 @@ namespace Library
                         Impresion.Log($"El proceso {procesoListo.Name} se añadió a la lista de bloqueados", activeLog);
                         //se setean en 0 para que no siga contando para los demas procesos que comenzarán a ejecutar
                         ////procesoListo.blokingOnTime = 0;
-                        blockingCount = 1;
+                        blockingCount = 0;
                         queue.Remove(procesoListo);
                         blokedList.Add(procesoListo);
                         OrderByPriority();
                     }
-
-
                 }
                 else
                 {
-                    blockingCount++;
-                    procesoListo.CpuTime--;
-                    //blokingOnTime = 0;
-                    //Console.WriteLine(procesoListo.CpuTime);
-                    Impresion.Log($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}", activeLog);
+                    if (procesoListo.CpuTime > 0)
+                    {
+                        blockingCount++;
+                        procesoListo.CpuTime--;
+                        //blokingOnTime = 0;
+                        //Console.WriteLine(procesoListo.CpuTime);
+                        Impresion.Log($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}", activeLog);
+                    }
+                    else
+                    {
+                        Impresion.Log($"El proceso {procesoListo.Name} finalizó su ejecución", activeLog);
+                        processFinishList.Add(procesoListo);
+                        queue.Remove(procesoListo);
+                        blockingCount = 0;
+                        // blokingOnTime = 0;
+                        OrderByPriority();
+                    }
                 }
+
             }
             else
             {
                 Impresion.Log($"El proceso {procesoListo.Name} finalizó su ejecución", activeLog);
                 processFinishList.Add(procesoListo);
                 queue.Remove(procesoListo);
-                blockingCount = 1;
+                blockingCount = 0;
                 // blokingOnTime = 0;
                 OrderByPriority();
             }
             BlokedStatus();
+
         }
+
+
 
 
         public static void OrderByPriority()
@@ -104,9 +122,9 @@ namespace Library
                 }
             }
 
-            if (blokedList.Count == 0 && queue.Count == 0)
+            if (blokedList.Count > 0 && queue.Count == 0)
             {
-                Console.WriteLine("No hay procesos para ejecutar");
+                BlokedStatus();
             }
 
 
@@ -115,24 +133,33 @@ namespace Library
         //Metodo para sacar proceso de la lista de bloqueo
         public static void BlokedStatus()
         {
-
-            foreach (Proceso process in blokedList)
+            if (blokedList.Count > 0)
             {
-                process.blokingOnTime++;
-
-                if (process.waitingInEs == process.blokingOnTime)
+                //List<Proceso> blockedListCopy = blokedList;
+                foreach (Proceso process in blokedList)
                 {
-                    process.blokingOnTime = 0;
-                    blokedList.Remove(process);
-                    queue.Add(process);
-                    Console.WriteLine($"se removio el proceso {process.Name} de la lista de bloqueados");
-
-                    if (queue[0].owner == false)
+                    process.blokingOnTime++;
+                    if (process.waitingInEs + 1 == process.blokingOnTime)
                     {
-                        OrderByPriority();
+                        process.blokingOnTime = 0;
+                        blokedList.Remove(process);
+                        queue.Add(process);
+
+                        if (queue[0].owner == false)
+                        {
+                            Console.WriteLine($"se removio el proceso {process.Name} de la lista de bloqueados");
+                            OrderByPriority();
+                        }
                     }
                 }
+                if (blokedList.Count > 0 && queue.Count == 0)
+                {
+                    // Console.WriteLine("El proceso esta bloqueado y no hay nada para ejecutar.");
+                    BlokedStatus();
+                }
+
             }
+
         }
 
 

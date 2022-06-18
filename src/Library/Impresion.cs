@@ -25,7 +25,7 @@ namespace Library
                         processNameQueue.Add(proceso.Name);
                     }
                 }
-
+                
 
                 foreach (var proceso in Planificador.blokedList)
                 {

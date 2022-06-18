@@ -15,7 +15,6 @@ namespace Library
 
         public bool owner;
 
-        public int count;
 
         public Proceso(string name, int cpuTime, int priority, int waitingEs, int waitingInEs, bool owner)
         {

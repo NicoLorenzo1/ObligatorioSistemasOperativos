@@ -36,9 +36,11 @@ namespace Library
 
             //Planificador.processCount++;
             //Planificador.blockingCount++;
+            //Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
             Planificador.PlanificatorLogic(activeLog);
             Planificador.PriorityCalculated();
-            Planificador.BlokedStatus();
+            //Planificador.BlokedStatus();
 
             //Console.WriteLine(Planificador.processFinishList.Count);
             //Console.Clear();

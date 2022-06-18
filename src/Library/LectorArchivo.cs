@@ -42,6 +42,7 @@ namespace Library
 
 
                         Proceso proceso = new Proceso(name, cpu, priority, wait, waitEs, owner);
+                        Planificador.queue.Add(proceso);
                         //Console.WriteLine(cpu);
 
                         // Console.WriteLine(name);

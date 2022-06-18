@@ -9,10 +9,10 @@ namespace Library
         public int priority;
         private int timeWaiting;
         public int waitingEs; //cada cuanto tiempo requiere entrada salida
-
         public int waitingInEs; //tiempo que demora mientras hace la entrada salida
+        public int blokingOnTime; //tiempo que paso en espera
 
-        public static List<Proceso> processList = new List<Proceso>();
+
         public bool owner;
 
         public int count;
@@ -27,7 +27,6 @@ namespace Library
             this.waitingInEs = waitingInEs;
             this.owner = owner;
 
-            processList.Add(this);
         }
         public string Name
         {

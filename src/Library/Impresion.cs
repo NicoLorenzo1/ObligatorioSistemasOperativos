@@ -35,14 +35,6 @@ namespace Library
                     }
                 }
 
-                foreach (var proceso in Planificador.processToEjecuteList)
-                {
-                    if (!processNameEjecution.Contains(proceso.Name))
-                    {
-                        processNameEjecution.Add(proceso.Name);
-                    }
-                }
-
                 foreach (var proceso in Planificador.processFinishList)
                 {
                     if (!processNameFinish.Contains(proceso.Name))
@@ -57,10 +49,10 @@ namespace Library
                 Console.Write($" Lista de procesos esperando para ejecutar ==> [{String.Join("-", processNameQueue)}] \n");
                 Console.WriteLine("\n");
 
-                Console.Write($" Proceso en ejecución ==> [{String.Join("-", processNameEjecution)}] \n");
+                Console.Write($" Proceso en ejecución ==> [{String.Join("-", Planificador.queue[0].Name)}] \n");
                 Console.WriteLine("\n");
 
-                Console.Write($" Lista de procesos bloqueados ==> [{Planificador.blokedList.Count}{String.Join("-", processNameBlokedList)}] \n");
+                Console.Write($" Lista de procesos bloqueados ==> [{String.Join("-", processNameBlokedList)}] \n");
                 Console.WriteLine("\n");
 
                 Console.Write($" Lista de procesos finalizados ==> [{String.Join("-", processNameFinish)}] \n");

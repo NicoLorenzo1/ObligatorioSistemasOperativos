@@ -40,6 +40,8 @@ namespace Library
 
             Planificador.PlanificatorLogic(activeLog);
             Planificador.PriorityCalculated();
+            Planificador.setCount();
+            //Planificador.blockingCount++;
             //Planificador.BlokedStatus();
 
             //Console.WriteLine(Planificador.processFinishList.Count);

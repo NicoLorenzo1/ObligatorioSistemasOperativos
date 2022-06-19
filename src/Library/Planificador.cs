@@ -61,17 +61,9 @@ namespace Library
                         }
                     }
 
-                    //Si el proceso no es de SO
+
                 }
-                else
-                {
-                    Impresion.Log($"El proceso {procesoListo.Name} finalizó su ejecución", activeLog);
-                    processFinishList.Add(procesoListo);
-                    queue.Remove(procesoListo);
-                    blockingCount = 0;
-                    // blokingOnTime = 0;
-                    OrderByPriority();
-                }
+
 
                 /*
                 else
@@ -87,11 +79,39 @@ namespace Library
 
             }
 
-
-
-
+            //Si el proceso es de usuario
+            if (procesoListo.CpuTime > 0)
+            {
+                if (blockingCount < procesoListo.waitingEs && procesoListo.CpuTime > 0)
+                {
+                    blockingCount++;
+                    Console.WriteLine("Se Ejecuta");
+                    Impresion.Log($"El proceso {procesoListo.Name} se esta ejecutando con prioridad {procesoListo.priority}", activeLog);
+                    procesoListo.CpuTime--;
+                }
+                else
+                {
+                    if (blockingCount == procesoListo.waitingEs)
+                    {
+                        Impresion.Log($"El proceso {procesoListo.Name} se añadió a la lista de bloqueados", activeLog);
+                        Console.WriteLine("el proceso se añadio a la lista de bloqueados");
+                        procesoListo.blokingOnTime = 0;
+                        queue.Remove(procesoListo);
+                        blokedList.Add(procesoListo);
+                        OrderByPriority();
+                    }
+                }
+            }
+            else
+            {
+                Impresion.Log($"El proceso {procesoListo.Name} finalizó su ejecución", activeLog);
+                processFinishList.Add(procesoListo);
+                queue.Remove(procesoListo);
+                blockingCount = 0;
+                // blokingOnTime = 0;
+                OrderByPriority();
+            }
         }
-
 
         public static void OrderByPriority()
         {
@@ -116,7 +136,16 @@ namespace Library
             }
             else
             {
-                Console.WriteLine("No hay procesos para ejecutar.");
+                if (blokedList.Count == 0)
+                {
+                    Console.WriteLine("No hay procesos para ejecutar.");
+                }
+                
+                else
+                {
+                    BlokedStatus();
+                }
+                
             }
         }
 
@@ -126,12 +155,12 @@ namespace Library
 
             foreach (Proceso process in blokedList)
             {
-                Console.WriteLine(blokedList.Count);
+                Console.WriteLine("se incrementa blokinOnTime");
                 process.blokingOnTime++;
-
                 if (process.waitingInEs == process.blokingOnTime)
                 {
                     process.blokingOnTime = 0;
+                    blockingCount = 0;
                     blokedList.Remove(process);
                     queue.Add(process);
                     Console.WriteLine($"se removio el proceso {process.Name} de la lista de bloqueados");
@@ -141,12 +170,16 @@ namespace Library
                         OrderByPriority();
                     }
                 }
+                /*
+                                if (queue.Count == 0 && blokedList.Count > 0)
+                                {
+                                    Console.WriteLine("prueba");
+                                    BlokedStatus();
+                                }
+                                */
 
             }
-            if (queue.Count == 0 && blokedList.Count > 0)
-            {
-                BlokedStatus();
-            }
+
         }
 
 

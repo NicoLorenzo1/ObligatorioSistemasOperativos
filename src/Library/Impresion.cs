@@ -25,7 +25,7 @@ namespace Library
                         processNameQueue.Add(proceso.Name);
                     }
                 }
-                
+
 
                 foreach (var proceso in Planificador.blokedList)
                 {
@@ -43,7 +43,8 @@ namespace Library
                     }
                 }
 
-
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("------------------------------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.White;
 
                 Console.Write($" Lista de procesos esperando para ejecutar ==> [{String.Join("-", processNameQueue)}] \n");

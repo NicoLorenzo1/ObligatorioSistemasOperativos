@@ -42,7 +42,7 @@ namespace Library
             Planificador.PriorityCalculated();
             Planificador.setCount();
             //Planificador.blockingCount++;
-            //Planificador.BlokedStatus();
+            Planificador.BlokedStatus();
 
             //Console.WriteLine(Planificador.processFinishList.Count);
             //Console.Clear();

@@ -38,10 +38,6 @@ namespace Library
                     { // momento de E/S
                         if (current.owner == true)
                         { // proceso de SO - continuar la ejecucion - Procesar y procesar E/S
-                            if (current.ioCounter == 0)
-                            { //el primer ciclo decrementa un ciclo de los requeridos por el proceso
-                                //Console.WriteLine($"El proceso de SO {current.Name} se esta ejecutando con prioridad {current.priority}");
-                            }
                             if (current.ioRequiredTime > current.ioCounter)
                             { // Falta procesar E/S
                                 current.ioCounter++;

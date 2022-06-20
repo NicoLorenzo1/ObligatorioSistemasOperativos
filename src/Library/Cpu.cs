@@ -17,7 +17,7 @@ namespace Library
 
         private static void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
         {
-            Console.Clear();
+            //Console.Clear();
 
             Planificador.SchedulerLogic();
             Planificador.PriorityCalculated();

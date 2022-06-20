@@ -6,17 +6,20 @@ namespace Program
     {
         public static void Main(string[] args)
         {
-            Proceso proceso1 = new Proceso("proceso1", 5, 100, 2, 2, true);
-            //Proceso proceso2 = new Proceso("proceso2", 6, 100, 3, 4, false);
-            //Proceso proceso3 = new Proceso("proceso3", 7, 100, 2, 3, true);
+            //Proceso proceso1 = new Proceso("proceso1", 4, 100, 2, 2, true);
+            // Proceso proceso2 = new Proceso("proceso2", 6, 100, 3, 4, false);
+            // Proceso proceso3 = new Proceso("proceso3", 8, 50, 2, 3, true);
             // Proceso proceso4 = new Proceso("proceso4", 2, 120);
+            //Planificador.queue.Add(proceso1);
+            string path = "../PlanificadorLectura.txt";
+            List<Proceso> listToExecute = LectorArchivo.Read(path);
 
-            //LectorArchivo.Read();
-
+            Planificador.Queue = listToExecute;
             Planificador.OrderByPriority();
             Cpu cpu = new Cpu();
-            cpu.TimerCounter();
-            //cpu.OrderByPriority();
+
+            //false muestra listas y true muestra paso a paso 
+            cpu.TimerCounter(false);
 
 
         }

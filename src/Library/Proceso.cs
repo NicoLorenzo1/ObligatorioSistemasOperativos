@@ -8,26 +8,25 @@ namespace Library
         private int cpuTime;
         public int priority;
         private int timeWaiting;
-        public int waitingEs; //cada cuanto tiempo requiere entrada salida
+        public int ioTime; //cada cuanto tiempo requiere entrada salida
+        public int ioRequiredTime; //tiempo que demora mientras hace la entrada salida
+        public int ioCounter; //contador de E/S
 
-        public int waitingInEs; //tiempo que demora mientras hace la entrada salida
 
-        public static List<Proceso> processList = new List<Proceso>();
         public bool owner;
 
         public int count;
 
-        public Proceso(string name, int cpuTime, int priority, int waitingEs, int waitingInEs, bool owner)
+        public Proceso(string name, int cpuTime, int priority, int ioTime, int ioRequiredTime, bool owner)
         {
             this.priority = priority;
             this.name = name;
             this.cpuTime = cpuTime;
             this.timeWaiting = 0;
-            this.waitingEs = waitingEs;
-            this.waitingInEs = waitingInEs;
+            this.ioTime = ioTime;
+            this.ioRequiredTime = ioRequiredTime;
             this.owner = owner;
 
-            processList.Add(this);
         }
         public string Name
         {

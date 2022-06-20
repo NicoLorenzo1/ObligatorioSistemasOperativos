@@ -53,7 +53,7 @@ namespace Library
                         }
                         else
                         { // proceso de Usuario - agregar a la lista de bloqueados
-                            Console.WriteLine($" # - El proceso {current.Name} se añadió a la lista de bloqueados");
+                            Console.WriteLine($" # - El proceso de usuario {current.Name} se añadió a la lista de bloqueados");
                             counter = 1;
                             queue.Remove(current);
                             blockedList.Add(current);
@@ -124,7 +124,7 @@ namespace Library
                     process.ioCounter = 0;
                     queue.Add(process);
                     processToRemove.Add(process);
-                    Console.WriteLine($" # - El proceso {process.Name} fue removido de la lista de bloqueados");
+                    Console.WriteLine($" # - El proceso de usuario {process.Name} fue removido de la lista de bloqueados");
                 }
             }
             foreach (var process in processToRemove)

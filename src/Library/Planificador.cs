@@ -15,6 +15,8 @@ namespace Library
         public static int priorityCount = 0; //contador de priority
         public static int counter = 1; //contador de e/s
 
+        public static Proceso current;
+
         public static List<Proceso> Queue
         {
             get
@@ -31,24 +33,18 @@ namespace Library
         public static void SchedulerLogic()
         {
 
+            priorityCount++;
 
             if (queue.Count > 0)
             {
-                Proceso current = queue[0];
-                // Si falta procesar
-                // si es momeno de E/S 
-                // si es de SO
-                // procesar E/S 
-                // Si no
-                // agregar a la lista de bloqueados
-                // si no - Procesar    
+                current = queue[0];
 
-                Console.WriteLine($">>>> {current.CpuTime} - {current.ioCounter} - {counter}");
+                // Console.WriteLine($">>>> {current.CpuTime} - {current.ioCounter} - {counter}");
 
-                // Si no terminar proceso
+                // Si no termino proceso
                 if (current.CpuTime > 0)
                 {
-                    if (current.ioTime + 1 == counter)
+                    if (current.ioTime + 1 == counter && current.ioTime > 0)
                     { // momento de E/S
                         if (current.owner == true)
                         { // proceso de SO - continuar la ejecucion - Procesar y procesar E/S
@@ -60,13 +56,13 @@ namespace Library
                             if (current.ioRequiredTime > current.ioCounter)
                             { // Falta procesar E/S
                                 current.ioCounter++;
-                                Console.WriteLine($"El proceso de SO {current.Name} espera por E/S.");
+                                Console.WriteLine($" # - El proceso de SO {current.Name} espera por E/S.");
                             }
                             else
                             { // se procesaron todas las E/S
                                 counter = 1;
                                 current.ioCounter = 0;
-                                Console.WriteLine($"El proceso de SO {current.Name} finaliza la E/S.");
+                                Console.WriteLine($" # - El proceso de SO {current.Name} finaliza la E/S.");
                                 SchedulerLogic();
                             }
 
@@ -82,7 +78,7 @@ namespace Library
                               //current.CpuTime--;
 
                             }
-                            Console.WriteLine($"El proceso {current.Name} se añadió a la lista de bloqueados");
+                            Console.WriteLine($" # - El proceso {current.Name} se añadió a la lista de bloqueados");
                             counter = 1;
                             queue.Remove(current);
                             blockedList.Add(current);
@@ -98,7 +94,7 @@ namespace Library
                 }
                 else
                 { // Finalizar proceso
-                    Console.WriteLine($"El proceso {current.Name} finalizó su ejecución");
+                    Console.WriteLine($" # - El proceso {current.Name} finalizó su ejecución");
 
                     processFinishList.Add(current);
                     queue.Remove(current);
@@ -136,7 +132,7 @@ namespace Library
 
             if (blockedList.Count == 0 && queue.Count == 0)
             {
-                Console.WriteLine("No hay procesos para ejecutar");
+                Console.WriteLine(" #No hay procesos para ejecutar");
             }
 
         }
@@ -153,7 +149,7 @@ namespace Library
                     process.ioCounter = 0;
                     blockedList.Remove(process);
                     queue.Add(process);
-                    Console.WriteLine($"El proceso {process.Name} fue removido de la lista de bloqueados");
+                    Console.WriteLine($" # - El proceso {process.Name} fue removido de la lista de bloqueados");
 
                     if (queue[0].owner == false)
                     {

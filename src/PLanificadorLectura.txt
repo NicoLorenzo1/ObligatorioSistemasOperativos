@@ -1,1 +1,6 @@
-proceso5;5;19;2;2;true;
+proceso1;3;10;2;1;true;
+proceso2;5;50;2;2;false;
+proceso3;2;70;1;5;false;
+proceso4;6;40;0;0;false;
+proceso5;8;19;0;0;false;
+proceso6;3;70;1;4;true;

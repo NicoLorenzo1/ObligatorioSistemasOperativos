@@ -7,13 +7,11 @@ namespace Library
 {
     public class Cpu
     {
-        public int count = 0;
-        static bool activeLog = false;
+        public static int count = 0;
         private static System.Timers.Timer timerCounter = new System.Timers.Timer(1000);
 
         public void TimerCounter(bool activeLog)
         {
-            Cpu.activeLog = activeLog;
             timerCounter.Elapsed += timerCounter_Elapsed;
             timerCounter.Start();
             timerCounter.Enabled = true;
@@ -24,15 +22,16 @@ namespace Library
 
         private static void timerCounter_Elapsed(Object source, ElapsedEventArgs e)
         {
-
-            Planificador.priorityCount++;
-
+            count++;
             //Console.Clear();
+            if (count > 1)
+            {
+                Impresion.ImpresionListas();
+            }
 
             Planificador.SchedulerLogic();
-            Impresion.ImpresionListas(activeLog);
-
             Planificador.PriorityCalculated();
+
 
 
             if (Planificador.Queue.Count == 0 && Planificador.blockedList.Count == 0)

@@ -8,9 +8,9 @@ namespace Library
     public class Cpu
     {
         public static int count = 0;
-        private static System.Timers.Timer timerCounter = new System.Timers.Timer(1000);
+        private static System.Timers.Timer timerCounter = new System.Timers.Timer(2000);
 
-        public void TimerCounter(bool activeLog)
+        public void TimerCounter()
         {
             timerCounter.Elapsed += timerCounter_Elapsed;
             timerCounter.Start();
@@ -26,11 +26,11 @@ namespace Library
             //Console.Clear();
             if (count > 1)
             {
-                Impresion.ImpresionListas();
             }
 
             Planificador.SchedulerLogic();
             Planificador.PriorityCalculated();
+            Impresion.ImpresionListas();
 
 
 

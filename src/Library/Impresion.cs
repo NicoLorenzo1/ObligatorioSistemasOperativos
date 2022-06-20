@@ -38,14 +38,16 @@ namespace Library
             }
 
 
-
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\n Lista de procesos esperando para ejecutar ==> [{String.Join(" - ", processNameQueue)}] \n");
 
             Console.Write($" Proceso en ejecución ==> [");
-            if (Planificador.Queue.Count > 0 && !processNameBlockedList.Contains(Planificador.current.Name) && !processNameFinish.Contains(Planificador.current.Name))
+            if (Planificador.current != null)
             {
-                Console.Write(String.Join(" - ", Planificador.current.Name));
+                if (!processNameBlockedList.Contains(Planificador.current.Name) && !processNameFinish.Contains(Planificador.current.Name))
+                {
+                    Console.Write(Planificador.current.Name);
+                }
             }
             Console.Write("]");
             Console.WriteLine("\n");

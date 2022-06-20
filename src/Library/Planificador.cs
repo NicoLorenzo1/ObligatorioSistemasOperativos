@@ -39,7 +39,7 @@ namespace Library
             {
                 current = queue[0];
 
-                // Console.WriteLine($">>>> {current.CpuTime} - {current.ioCounter} - {counter}");
+                Console.WriteLine($">>>> {current.CpuTime} - {current.ioCounter} - {counter}");
 
                 // Si no termino proceso
                 if (current.CpuTime > 0)
@@ -82,7 +82,13 @@ namespace Library
                             counter = 1;
                             queue.Remove(current);
                             blockedList.Add(current);
-                            OrderByPriority();
+
+                            if (queue.Count == 0)
+                            {
+                                current = null;
+
+                            }
+                            //OrderByPriority();
                         }
                     }
                     else
@@ -90,10 +96,16 @@ namespace Library
                         current.CpuTime--;
                         counter++;
                         //Console.WriteLine($"El proceso {current.Name} se esta ejecutando con prioridad {current.priority}");
+                        //Console.WriteLine($" # - >>> >>>> {current.CpuTime}");
+
+
                     }
+
                 }
                 else
                 { // Finalizar proceso
+
+
                     Console.WriteLine($" # - El proceso {current.Name} finalizó su ejecución");
 
                     processFinishList.Add(current);
@@ -140,6 +152,7 @@ namespace Library
         //Metodo para sacar proceso de la lista de bloqueo
         public static void BlockedStatus()
         {
+            List<Proceso> processToRemove = new List<Proceso>();
 
             foreach (Proceso process in blockedList)
             {
@@ -147,17 +160,20 @@ namespace Library
                 if (process.ioRequiredTime < process.ioCounter)
                 {
                     process.ioCounter = 0;
-                    blockedList.Remove(process);
                     queue.Add(process);
+                    processToRemove.Add(process);
                     Console.WriteLine($" # - El proceso {process.Name} fue removido de la lista de bloqueados");
-
-                    if (queue[0].owner == false)
-                    {
-                        OrderByPriority();
-                    }
                 }
             }
+            foreach (var process in processToRemove)
+            {
+                blockedList.Remove(process);
+            }
+
+
+
         }
+
 
 
 

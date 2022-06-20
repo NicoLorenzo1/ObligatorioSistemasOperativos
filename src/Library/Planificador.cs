@@ -1,22 +1,14 @@
-using System.Linq;
-using System.Collections.Generic;
-using System;
-
 namespace Library
 {
     public class Planificador
     {
-
         private static List<Proceso> queue = new List<Proceso>();
         public static List<Proceso> blockedList = new List<Proceso>();
         public static List<Proceso> processFinishList = new List<Proceso>();
 
-
-        public static int priorityCount = 0; //contador de priority
-        public static int counter = 1; //contador de e/s
-
-        public static Proceso current;
-
+        private static int priorityCount = 0; //Contador de priority
+        private static int counter = 1; //Contador de E/S
+        public static Proceso current; //Proceso que se esta ejecutando
         public static List<Proceso> Queue
         {
             get
@@ -39,8 +31,6 @@ namespace Library
             {
                 current = queue[0];
 
-                Console.WriteLine($">>>> {current.CpuTime} - {current.ioCounter} - {counter}");
-
                 // Si no termino proceso
                 if (current.CpuTime > 0)
                 {
@@ -50,7 +40,6 @@ namespace Library
                         { // proceso de SO - continuar la ejecucion - Procesar y procesar E/S
                             if (current.ioCounter == 0)
                             { //el primer ciclo decrementa un ciclo de los requeridos por el proceso
-                                //current.CpuTime--;
                                 //Console.WriteLine($"El proceso de SO {current.Name} se esta ejecutando con prioridad {current.priority}");
                             }
                             if (current.ioRequiredTime > current.ioCounter)
@@ -65,49 +54,30 @@ namespace Library
                                 Console.WriteLine($" # - El proceso de SO {current.Name} finaliza la E/S.");
                                 SchedulerLogic();
                             }
-
-                            //procesar
-
-                            //manejar E/S
                         }
                         else
                         { // proceso de Usuario - agregar a la lista de bloqueados
-                            if (current.ioCounter == 0)
-                            { //el primer ciclo decrementa un ciclo de los requeridos por el proceso
-                              //Console.WriteLine($"El proceso de Usuario {current.Name} se esta ejecutando con prioridad {current.priority}");
-                              //current.CpuTime--;
-
-                            }
                             Console.WriteLine($" # - El proceso {current.Name} se añadió a la lista de bloqueados");
                             counter = 1;
                             queue.Remove(current);
                             blockedList.Add(current);
 
+                            //Para que cuando queue sea 0 no le asigne el nombre del proceso que se ejecuto anteriormente a current
                             if (queue.Count == 0)
                             {
                                 current = null;
-
                             }
-                            //OrderByPriority();
                         }
                     }
                     else
                     { // Procesar 
                         current.CpuTime--;
                         counter++;
-                        //Console.WriteLine($"El proceso {current.Name} se esta ejecutando con prioridad {current.priority}");
-                        //Console.WriteLine($" # - >>> >>>> {current.CpuTime}");
-
-
                     }
-
                 }
                 else
                 { // Finalizar proceso
-
-
                     Console.WriteLine($" # - El proceso {current.Name} finalizó su ejecución");
-
                     processFinishList.Add(current);
                     queue.Remove(current);
                     counter = 1;
@@ -115,19 +85,16 @@ namespace Library
                 }
             }
             BlockedStatus();
-
-
         }
 
 
         public static void OrderByPriority()
         {
             //Ordena por prioridad y si dos procesos tienen la misma prioridad toma el que tenga menor tiempo de cpu.
-            //Luego asigna el proceso que debe ejecutar a la lista processToEjecuteList
+            //El proceso a ejecutar se guarda en current.
 
             if (queue.Count > 0)
             {
-
                 queue = queue.OrderByDescending(c => c.priority).ToList();
                 Proceso current;
 
@@ -146,7 +113,6 @@ namespace Library
             {
                 Console.WriteLine(" #No hay procesos para ejecutar");
             }
-
         }
 
         //Metodo para sacar proceso de la lista de bloqueo
@@ -169,13 +135,7 @@ namespace Library
             {
                 blockedList.Remove(process);
             }
-
-
-
         }
-
-
-
 
         public static void PriorityCalculated()
         {

@@ -11,14 +11,16 @@ namespace Program
             // Proceso proceso3 = new Proceso("proceso3", 8, 50, 2, 3, true);
             // Proceso proceso4 = new Proceso("proceso4", 2, 120);
             //Planificador.queue.Add(proceso1);
+
+            //Lector de archivo donde se van a cargar los procesos de un solo ingreso.
             string path = "../PlanificadorLectura.txt";
             List<Proceso> listToExecute = LectorArchivo.Read(path);
-
             Planificador.Queue = listToExecute;
-            Planificador.OrderByPriority();
-            Cpu cpu = new Cpu();
 
-            //false muestra listas y true muestra paso a paso 
+            Planificador.OrderByPriority();
+
+            //Se llama al timer una sola vez para que comience a ejecutarse.
+            Cpu cpu = new Cpu();
             cpu.TimerCounter();
 
 

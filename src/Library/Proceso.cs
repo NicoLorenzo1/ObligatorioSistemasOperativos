@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Library
+﻿namespace Library
 {
     public class Proceso
     {
@@ -12,11 +10,8 @@ namespace Library
         public int ioRequiredTime; //tiempo que demora mientras hace la entrada salida
         public int ioCounter; //contador de E/S
 
-
         public bool owner;
-
-        public int count;
-
+  
         public Proceso(string name, int cpuTime, int priority, int ioTime, int ioRequiredTime, bool owner)
         {
             this.priority = priority;
@@ -26,7 +21,6 @@ namespace Library
             this.ioTime = ioTime;
             this.ioRequiredTime = ioRequiredTime;
             this.owner = owner;
-
         }
         public string Name
         {
@@ -51,8 +45,6 @@ namespace Library
                 this.cpuTime = value;
             }
         }
-
-
 
         public int TimeWaiting
         {

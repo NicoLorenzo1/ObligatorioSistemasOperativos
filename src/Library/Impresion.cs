@@ -1,5 +1,3 @@
-using System;
-
 namespace Library
 {
     public static class Impresion
@@ -11,7 +9,6 @@ namespace Library
 
         public static void ImpresionListas()
         {
-
             foreach (var proceso in Planificador.Queue)
             {
                 if (!processNameQueue.Contains(proceso.Name))
@@ -37,7 +34,6 @@ namespace Library
                 }
             }
 
-
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\n Lista de procesos esperando para ejecutar ==> [{String.Join(" - ", processNameQueue)}] \n");
 
@@ -59,7 +55,6 @@ namespace Library
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("------------------------------------------------------------------------------------");
             Console.ForegroundColor = ConsoleColor.White;
-
 
             processNameBlockedList.Clear();
             processNameQueue.Clear();

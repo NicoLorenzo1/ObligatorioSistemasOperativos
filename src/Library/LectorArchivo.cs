@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace Library
 {
     public class LectorArchivo
@@ -27,7 +24,6 @@ namespace Library
                         int wait = int.Parse(lectura[3]);
                         int waitEs = int.Parse(lectura[4]);
                         bool owner = bool.Parse(lectura[5]);
-
 
                         Proceso process = new Proceso(name, cpu, priority, wait, waitEs, owner);
                         list.Add(process);
